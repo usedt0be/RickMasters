@@ -60,6 +60,16 @@ fun VisitorItem(
                     .clip(CircleShape),
                 contentScale = ContentScale.FillBounds
             )
+
+            if (visitor.isOnline) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_online_status_point),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd),
+                    tint = Color.Unspecified
+                )
+            }
         }
 
         Text(
