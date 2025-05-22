@@ -6,7 +6,6 @@ import java.util.Calendar
 import java.util.Locale
 
 object Utils {
-
     fun getDailyUniqueViewCounts(statistics: List<Statistic>): Map<String, Int> {
         return statistics
             .asSequence()
@@ -57,5 +56,27 @@ object Utils {
             calendar.add(Calendar.DAY_OF_MONTH, 1)
             formattedDate
         }
+    }
+
+    fun parseDate(input: String): String {
+        val inputFormat = SimpleDateFormat("dd.MM", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("d MMMM", Locale("ru"))
+
+        val date = inputFormat.parse(input)
+        return outputFormat.format(date!!)
+    }
+
+    fun pluralizeVisitors(count: Int): String {
+        val remainder10 = count % 10
+        val remainder100 = count % 100
+
+        val word = when {
+            remainder100 in 11..14 -> "посетителей"
+            remainder10 == 1 -> "посетитель"
+            remainder10 in 2..4 -> "посетителя"
+            else -> "посетителей"
+        }
+
+        return "$count $word"
     }
 }
