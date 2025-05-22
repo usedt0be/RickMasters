@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.ktor.logging)
     implementation(libs.ktor.content.negotiation)
     implementation(libs.timber)
+    implementation(libs.coil.compose)
 
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.core.ktx)

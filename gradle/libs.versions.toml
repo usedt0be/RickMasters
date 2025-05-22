@@ -10,6 +10,7 @@ activityCompose = "1.10.1"
 composeBom = "2024.09.00"
 ktor = "3.0.1"
 timber = "5.0.1"
+coil = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,7 @@ ktor-serialization-json = {module= "io.ktor:ktor-serialization-kotlinx-json", ve
 ktor-logging = {module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+coil-compose = {module = "io.coil-kt:coil-compose", version.ref = "coil"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

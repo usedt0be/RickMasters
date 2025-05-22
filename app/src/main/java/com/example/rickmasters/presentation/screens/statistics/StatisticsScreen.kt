@@ -4,10 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import com.example.rickmasters.R
 import com.example.rickmasters.domain.models.TrendDirection
 import com.example.rickmasters.presentation.Utils
 import com.example.rickmasters.presentation.screens.statistics.components.VisitorsDifferenceCounter
+import com.example.rickmasters.presentation.screens.statistics.top_visitors.VisitorItem
 import com.example.rickmasters.presentation.screens.statistics.visitors_diagram.VisitorsDiagram
 import com.example.rickmasters.theme.AppTheme
 
@@ -91,6 +94,33 @@ fun StatisticsScreen(
                 modifier = Modifier.padding(top = 28.dp),
                 lineColor = AppTheme.colors.secondary
             )
+
+            Text(
+                text = "Чаще всех посещают Ваш профиль",
+                modifier = Modifier.padding(top = 28.dp),
+                style = AppTheme.typography.subTitle,
+                color = AppTheme.colors.textPrimary
+            )
+
+            Column(
+                modifier = Modifier
+            ) {
+                val favoriteVisitors= Utils.getFavoriteUsers(state.statistics, state.users)
+
+                favoriteVisitors.forEachIndexed { index, visitor ->
+                    VisitorItem(
+                        visitor = visitor
+                    )
+                    if(index != favoriteVisitors.lastIndex) {
+                        HorizontalDivider(
+                            thickness = 0.5.dp,
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(start = 48.dp, end = 2.dp),
+                            color = AppTheme.colors.onPrimaryContainer
+                        )
+                    }
+                }
+            }
         }
     }
 }

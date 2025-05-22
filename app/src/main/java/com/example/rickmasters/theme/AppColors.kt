@@ -12,6 +12,7 @@ data class AppColors(
     val textPrimary: Color,
     val textSecondary: Color,
     val primaryContainer: Color,
+    val onPrimaryContainer: Color,
     val onSuccess: Color
 )
 
@@ -22,6 +23,7 @@ val appColors = AppColors(
     textPrimary = Black1,
     textSecondary = Gray1,
     primaryContainer = White1,
+    onPrimaryContainer = Gray1,
     onSuccess = Green1
 )
 

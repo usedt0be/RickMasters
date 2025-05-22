@@ -1,6 +1,7 @@
 package com.example.rickmasters.presentation
 
 import com.example.rickmasters.domain.models.Statistic
+import com.example.rickmasters.domain.models.User
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -78,5 +79,19 @@ object Utils {
         }
 
         return "$count $word"
+    }
+
+    fun getFavoriteUsers(statistics: List<Statistic>, users: List<User>): List<User> {
+        val viewsMap = statistics.filter { it.type == "view" }
+            .groupBy { it.userId }
+            .mapValues { (_, stats) ->
+                stats.sumOf { it.dates.size }
+            }
+
+        val list = users.filter { viewsMap.containsKey(it.id) }
+            .sortedByDescending { viewsMap[it.id] ?: 0 }
+            .take(3)
+
+        return list
     }
 }
