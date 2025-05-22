@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RickMasters</string>
+    <string name="statistic_title">Статистика</string>
+    <string name="visitors_subtitle">Посетители</string>
+    <string name="visitors_increase_desc">Количество посетителей в\nэтом месяце выросло</string>
+    <string name="visitors_decrease_desc">Количество посетитилей в\nэтом месяце снизилось</string>
 </resources>

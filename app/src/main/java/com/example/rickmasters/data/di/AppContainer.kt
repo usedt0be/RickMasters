@@ -2,6 +2,8 @@ package com.example.rickmasters.data.di
 
 import com.example.rickmasters.data.network.StatisticApi
 import com.example.rickmasters.data.repository.StatisticRepositoryImpl
+import com.example.rickmasters.domain.usecase.GetStatisticUseCase
+import com.example.rickmasters.domain.usecase.GetUsersUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -64,6 +66,18 @@ class AppContainer {
     val statisticRepository by lazy {
         StatisticRepositoryImpl(
             statisticApi
+        )
+    }
+
+    val statisticUseCase by lazy {
+        GetStatisticUseCase(
+            statisticRepository
+        )
+    }
+
+    val getUserUseCase by lazy {
+        GetUsersUseCase(
+            statisticRepository
         )
     }
 }
