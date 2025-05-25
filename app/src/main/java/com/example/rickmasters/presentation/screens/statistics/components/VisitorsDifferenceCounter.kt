@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -22,16 +21,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.rickmasters.R
+
 import com.example.rickmasters.domain.models.TrendDirection
 import com.example.rickmasters.theme.AppTheme
 
 
 @Composable
-fun VisitorsDifferenceCounter(
+fun UsersActivityDifferenceCounter(
     trendDirection: TrendDirection,
     visitorsDifference: Int,
     modifier: Modifier = Modifier
-){
+) {
 
     Row(
         modifier = modifier
@@ -40,13 +40,12 @@ fun VisitorsDifferenceCounter(
             .background(
                 color = AppTheme.colors.primaryContainer,
                 shape = RoundedCornerShape(16.dp)
-            )
-        ,
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Icon(
-            imageVector = if (trendDirection == TrendDirection.INCREASE){
+            imageVector = if (trendDirection == TrendDirection.INCREASE) {
                 ImageVector.vectorResource(R.drawable.ic_grown_chart)
             } else {
                 ImageVector.vectorResource(R.drawable.ic_fall_chart)
@@ -63,7 +62,7 @@ fun VisitorsDifferenceCounter(
                 end = 20.dp
             ),
             verticalArrangement = Arrangement.Center,
-        ){
+        ) {
             Row(
                 modifier = Modifier,
                 verticalAlignment = Alignment.CenterVertically,
@@ -77,7 +76,7 @@ fun VisitorsDifferenceCounter(
                 )
 
                 Icon(
-                    imageVector = if (trendDirection == TrendDirection.INCREASE){
+                    imageVector = if (trendDirection == TrendDirection.INCREASE) {
                         ImageVector.vectorResource(R.drawable.ic_arrow_up)
                     } else {
                         ImageVector.vectorResource(R.drawable.ic_arrow_down)
@@ -87,21 +86,20 @@ fun VisitorsDifferenceCounter(
                     tint = Color.Unspecified
                 )
             }
-
             Text(
                 text = if (trendDirection == TrendDirection.INCREASE) {
                     stringResource(R.string.visitors_increase_desc)
                 } else {
                     stringResource(R.string.visitors_decrease_desc)
                 },
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier
+                    .padding(top = 8.dp)
                     .fillMaxWidth()
                     .align(Alignment.Start),
                 style = AppTheme.typography.body1,
                 color = AppTheme.colors.textSecondary,
                 textAlign = TextAlign.Start,
             )
-
         }
     }
 }
@@ -111,7 +109,7 @@ fun VisitorsDifferenceCounter(
 @Composable
 @Preview
 fun VisitorsDifferenceCounterPreview(){
-    VisitorsDifferenceCounter(
+    UsersActivityDifferenceCounter(
         trendDirection = TrendDirection.INCREASE,
         visitorsDifference = 800,
     )

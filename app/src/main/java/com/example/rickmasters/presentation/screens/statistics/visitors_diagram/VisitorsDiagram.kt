@@ -1,24 +1,16 @@
 package com.example.rickmasters.presentation.screens.statistics.visitors_diagram
 
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -69,7 +61,6 @@ fun VisitorsDiagram(
     val density = LocalDensity.current
     var selectedPoint by remember { mutableStateOf<Pair<String, Offset>?>(null) }
     var ptsState by remember { mutableStateOf<List<Pair<String, Offset>>>(emptyList()) }
-    Log.d("PTS_STATE", "$ptsState")
     val clickRadiusPx = with(density) {
         40.dp.toPx()
     }
@@ -79,49 +70,6 @@ fun VisitorsDiagram(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            val filterButtonNames = listOf<String>("По дням", "По неделям", "По месяцам",)
-            var selectedIndex by remember { mutableStateOf(0) }
-            filterButtonNames.forEachIndexed { index, name ->
-                val isSelected = index == selectedIndex
-                Button(
-                    onClick = {
-                        selectedIndex = index
-                    },
-                    modifier = Modifier
-                        .wrapContentWidth(),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    shape = RoundedCornerShape(percent = 50),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isSelected) {
-                            AppTheme.colors.secondary
-                        } else {
-                            Color.Transparent
-                        }
-                    ),
-                    border = BorderStroke(
-                        width = if (isSelected) { 0.dp } else {2.dp},
-                        color = AppTheme.colors.textSecondary
-                    )
-                ) {
-                    Text(
-                        text = name,
-                        modifier = Modifier,
-                        color = if (isSelected) {
-                            AppTheme.colors.primary
-                        } else {
-                            AppTheme.colors.textPrimary
-                        },
-                        style = AppTheme.typography.bodyRegular,
-                        maxLines = 1
-                    )
-                }
-            }
-        }
-
         Box(
             modifier = Modifier
                 .height(208.dp)
@@ -169,12 +117,10 @@ fun VisitorsDiagram(
                                 selectedPoint = ptsState.firstOrNull { (_, pointOffset) ->
                                     (tapOffset - pointOffset).getDistance() < clickRadiusPx
                                 }
-                                Log.d("SELECTED_POINT", "$selectedPoint")
                             }
                         }
                 ) {
 
-                    Log.d("SELECteD", "$selectedPoint")
                     val radiusPx = 6.dp.toPx()
                     val widthStep = size.width / (statistics.size - 1)
                     val heightMax = size.height
@@ -196,12 +142,10 @@ fun VisitorsDiagram(
                     }
 
                     points.forEach { (date, point) ->
-
                         drawCircle(
                             color = Color.White,
                             radius = radiusPx - 3f,
                             center = point,
-
                             )
 
                         drawCircle(
@@ -375,5 +319,4 @@ fun DrawScope.drawPointWindow(
             )
         )
     }
-
 }
