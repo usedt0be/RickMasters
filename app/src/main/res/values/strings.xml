@@ -4,4 +4,11 @@
     <string name="visitors_subtitle">Посетители</string>
     <string name="visitors_increase_desc">Количество посетителей в\nэтом месяце выросло</string>
     <string name="visitors_decrease_desc">Количество посетитилей в\nэтом месяце снизилось</string>
+    <string name="subs_increase_desc">Новые наблюдатели в этом месяце</string>
+    <string name="subs_decrease_desc">Пользователей перестали за вами наблюдать</string>
+    <string name="subs_subtitle">Наблюдатели</string>
+    <string name="gender_age_subtitile">Пол и возраст</string>
+    <string name="most_visitors_subtitle">Чаще всех посещают Ваш профиль</string>
+    <string name="men_stat">Мужчины</string>
+    <string name="woman_stat">Женщины</string>
 </resources>

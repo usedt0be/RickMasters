@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.rickmasters.R
+import com.example.rickmasters.domain.models.CounterObservableValue
 import com.example.rickmasters.domain.models.TrendDirection
 import com.example.rickmasters.presentation.Utils
 import com.example.rickmasters.presentation.screens.statistics.components.PeriodSelector
@@ -38,7 +39,6 @@ fun StatisticsScreen(
     factory: StatisticsViewModelFactory,
     statisticsViewModel: StatisticsViewModel = viewModel(factory = factory)
 ){
-
     val state = statisticsViewModel.state
     val uniqueViews = Utils.getDailyUniqueViewCounts(state.statistics)
     val minimalDate = Utils.findEarliestDayMonth(uniqueViews.keys.toList())
@@ -59,18 +59,14 @@ fun StatisticsScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .padding(
-                    start = 16.dp
-                )
+                .padding(start = 16.dp)
                 .fillMaxSize()
                 .background(color = AppTheme.colors.primary)
                 .verticalScroll(state = scrollState)
         ) {
             Text(
                 text = stringResource(R.string.statistic_title),
-                modifier = Modifier.padding(
-                    top = 48.dp
-                ),
+                modifier = Modifier.padding(top = 48.dp),
                 style = AppTheme.typography.title,
                 color = AppTheme.colors.textPrimary
             )
@@ -87,9 +83,11 @@ fun StatisticsScreen(
             UsersActivityDifferenceCounter(
                 trendDirection = TrendDirection.INCREASE,
                 visitorsDifference = 8,
+                counterObservableValue = CounterObservableValue.VISITORS,
                 modifier = Modifier.padding(
                     top = 12.dp, end = 16.dp
-                )
+                ),
+                shape = RoundedCornerShape(16.dp)
             )
 
             PeriodSelector(
@@ -105,7 +103,7 @@ fun StatisticsScreen(
             )
 
             Text(
-                text = "Чаще всех посещают Ваш профиль",
+                text = stringResource(R.string.most_visitors_subtitle),
                 modifier = Modifier.padding(top = 28.dp, end = 16.dp),
                 style = AppTheme.typography.subTitle,
                 color = AppTheme.colors.textPrimary
@@ -137,7 +135,7 @@ fun StatisticsScreen(
 
 
             Text(
-                text = "Пол и возраст",
+                text = stringResource(R.string.gender_age_subtitile),
                 modifier = Modifier.padding(top = 28.dp),
                 style = AppTheme.typography.subTitle,
                 color = AppTheme.colors.textPrimary
@@ -147,7 +145,6 @@ fun StatisticsScreen(
                 periods = GenderAgeDiagramPeriod.entries,
                 onSelect = {
                     it
-                    Timber.tag("PERIOD").d("$it")
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -172,8 +169,8 @@ fun StatisticsScreen(
                         AppTheme.colors.tertiary
                     ),
                     labelMapping = mapOf(
-                        "M" to "Мужчины",
-                        "W" to "Женщины"
+                        "M" to stringResource(R.string.men_stat),
+                        "W" to stringResource(R.string.woman_stat)
                     )
                 )
 
@@ -208,6 +205,35 @@ fun StatisticsScreen(
                     }
                 )
             }
+
+            Text(
+                text = stringResource(R.string.subs_subtitle),
+                style = AppTheme.typography.subTitle,
+                color = AppTheme.colors.textPrimary,
+                modifier = Modifier.padding(start = 16.dp, top = 28.dp, bottom = 12.dp)
+            )
+
+
+            UsersActivityDifferenceCounter(
+                trendDirection = TrendDirection.INCREASE,
+                counterObservableValue = CounterObservableValue.SUBSCRIPTIONS,
+                visitorsDifference = state.statistics.count { it.type == "subscription" },
+                modifier = Modifier.padding(end = 16.dp),
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            )
+
+            HorizontalDivider(
+                thickness = 0.5.dp,
+                modifier = Modifier
+            )
+
+            UsersActivityDifferenceCounter(
+                trendDirection = TrendDirection.DECREASE,
+                counterObservableValue = CounterObservableValue.SUBSCRIPTIONS,
+                visitorsDifference = state.statistics.count { it.type == "unsubscription" },
+                modifier = Modifier.padding(end = 16.dp, bottom = 32.dp),
+                shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+            )
         }
     }
 }

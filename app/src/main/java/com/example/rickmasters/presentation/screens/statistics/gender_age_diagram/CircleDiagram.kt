@@ -43,8 +43,7 @@ fun <T> CircleDiagram(
     val labels = groups.keys.toList().map { key ->
         labelMapping[key] ?: key
     }
-    Timber.tag("GROUPS").d("$values / $groups")
-    var startAngle = 270f
+    var startAngle = 90f
 
         Column(
             modifier = modifier.fillMaxWidth(),
@@ -84,7 +83,6 @@ fun <T> CircleDiagram(
             ) {
                 labels.forEachIndexed { index, value->
                     val percent = values.get(index)
-                    Log.d("PERC", "$percent")
                     LegendDiagramItem(
                         label = value,
                         percent = percent,
