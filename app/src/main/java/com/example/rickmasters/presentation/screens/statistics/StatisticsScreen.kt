@@ -21,7 +21,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.rickmasters.R
 import com.example.rickmasters.domain.models.CounterObservableValue
 import com.example.rickmasters.domain.models.TrendDirection
-import com.example.rickmasters.presentation.Utils
 import com.example.rickmasters.presentation.screens.statistics.components.PeriodSelector
 import com.example.rickmasters.presentation.screens.statistics.components.UsersActivityDifferenceCounter
 import com.example.rickmasters.presentation.screens.statistics.entity.GenderAgeDiagramPeriod
@@ -31,7 +30,6 @@ import com.example.rickmasters.presentation.screens.statistics.gender_age_diagra
 import com.example.rickmasters.presentation.screens.statistics.top_visitors.VisitorItem
 import com.example.rickmasters.presentation.screens.statistics.visitors_diagram.VisitorsDiagram
 import com.example.rickmasters.theme.AppTheme
-import timber.log.Timber
 
 
 @Composable
@@ -40,15 +38,7 @@ fun StatisticsScreen(
     statisticsViewModel: StatisticsViewModel = viewModel(factory = factory)
 ){
     val state = statisticsViewModel.state
-    val uniqueViews = Utils.getDailyUniqueViewCounts(state.statistics)
-    val minimalDate = Utils.findEarliestDayMonth(uniqueViews.keys.toList())
-    val week = minimalDate?.let { Utils.getWeekFrom(it) }
-
-    val visitorsToWeek = week?.associateWith { date ->
-        uniqueViews[date]?:0
-    } ?: emptyMap()
-    val favoriteVisitors= Utils.getFavoriteUsers(state.statistics, state.users)
-
+    val favoriteVisitors= state.favoriteVisitors
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -82,22 +72,28 @@ fun StatisticsScreen(
 
             UsersActivityDifferenceCounter(
                 trendDirection = TrendDirection.INCREASE,
-                visitorsDifference = 8,
+                visitorsDifference = state.users.count(),
                 counterObservableValue = CounterObservableValue.VISITORS,
                 modifier = Modifier.padding(
                     top = 12.dp, end = 16.dp
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                color = AppTheme.colors.primaryContainer
             )
 
             PeriodSelector(
                 periods = VisitorsPeriod.entries,
-                onSelect = {},
+                onSelect = { period ->
+                    statisticsViewModel.filterVisitorsByPeriod(
+                        statistics = state.statistics,
+                        visitorsPeriod = period as VisitorsPeriod
+                        )
+                },
                 modifier = Modifier.padding(top = 28.dp,end = 16.dp)
             )
 
             VisitorsDiagram(
-                statistics = visitorsToWeek,
+                statistics = state.visitorsDiagramData,
                 modifier = Modifier.padding(top = 12.dp, end = 16.dp),
                 lineColor = AppTheme.colors.secondary
             )
@@ -143,8 +139,10 @@ fun StatisticsScreen(
 
             PeriodSelector(
                 periods = GenderAgeDiagramPeriod.entries,
-                onSelect = {
-                    it
+                onSelect = { period ->
+                    statisticsViewModel.filterGenderAgeByPeriod(
+                        period = period as GenderAgeDiagramPeriod
+                    )
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -161,7 +159,7 @@ fun StatisticsScreen(
                     )
             ) {
                 CircleDiagram(
-                    items = state.users,
+                    items = state.genderAgeDiagramData,
                     category = {it.sex},
                     modifier = Modifier.padding(),
                     colors = listOf(
@@ -191,7 +189,7 @@ fun StatisticsScreen(
                 )
 
                 LinearDiagram(
-                    items = state.users,
+                    items = state.genderAgeDiagramData,
                     groups = ageGroups,
                     groupSelector = { user ->
                         ageGroups.firstOrNull { user.age in it }
@@ -219,7 +217,8 @@ fun StatisticsScreen(
                 counterObservableValue = CounterObservableValue.SUBSCRIPTIONS,
                 visitorsDifference = state.statistics.count { it.type == "subscription" },
                 modifier = Modifier.padding(end = 16.dp),
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                color = AppTheme.colors.primaryContainer
             )
 
             HorizontalDivider(
@@ -232,7 +231,8 @@ fun StatisticsScreen(
                 counterObservableValue = CounterObservableValue.SUBSCRIPTIONS,
                 visitorsDifference = state.statistics.count { it.type == "unsubscription" },
                 modifier = Modifier.padding(end = 16.dp, bottom = 32.dp),
-                shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+                shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+                color = AppTheme.colors.primaryContainer
             )
         }
     }

@@ -1,6 +1,5 @@
 package com.example.rickmasters.presentation.screens.statistics.gender_age_diagram
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.rickmasters.theme.AppTheme
-import timber.log.Timber
 
 
 @Composable
@@ -43,7 +41,6 @@ fun <T> CircleDiagram(
     val labels = groups.keys.toList().map { key ->
         labelMapping[key] ?: key
     }
-    var startAngle = 90f
 
         Column(
             modifier = modifier.fillMaxWidth(),
@@ -56,6 +53,7 @@ fun <T> CircleDiagram(
                     .size(150.dp)
                     .rotate(gapAngle/values.size)
             ) {
+                var startAngle = 90f
                 val diameter = size.minDimension
                 val stroke = arcThickness.toPx()
                 var currentStartAngle = startAngle

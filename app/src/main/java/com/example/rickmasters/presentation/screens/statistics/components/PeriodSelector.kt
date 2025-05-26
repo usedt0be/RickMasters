@@ -26,7 +26,7 @@ import com.example.rickmasters.theme.AppTheme
 @Composable
 fun PeriodSelector(
     periods: List<SelectablePeriod>,
-    onSelect: (String) -> Unit,
+    onSelect: (SelectablePeriod) -> Unit,
     modifier: Modifier = Modifier
 ){
     val scrollState = rememberScrollState()
@@ -42,7 +42,7 @@ fun PeriodSelector(
             Button(
                 onClick = {
                     selectedIndex = index
-                    onSelect(periods[index].label)
+                    onSelect(periods[index])
                 },
                 modifier = Modifier,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),

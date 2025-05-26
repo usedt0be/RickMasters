@@ -2,8 +2,17 @@ package com.example.rickmasters.data.di
 
 import com.example.rickmasters.data.network.StatisticApi
 import com.example.rickmasters.data.repository.StatisticRepositoryImpl
+import com.example.rickmasters.domain.interactor.GenderAgePeriodFilterInteractorImpl
+import com.example.rickmasters.domain.interactor.VisitorsPeriodFilterInteractorImpl
+import com.example.rickmasters.domain.usecase.GetFavoriteVisitorsUseCase
+import com.example.rickmasters.domain.usecase.GetLatestMonthDateUseCase
+import com.example.rickmasters.domain.usecase.GetPreviousSevenWeeksUseCase
 import com.example.rickmasters.domain.usecase.GetStatisticUseCase
+import com.example.rickmasters.domain.usecase.GetUniqueViewsCountUseCase
 import com.example.rickmasters.domain.usecase.GetUsersUseCase
+import com.example.rickmasters.domain.usecase.GetPreviousSevenDaysUseCase
+import com.example.rickmasters.domain.usecase.GetPreviousSevenMonthsUseCase
+import com.example.rickmasters.domain.usecase.GetPreviousThirtyDaysUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -80,4 +89,58 @@ class AppContainer {
             statisticRepository
         )
     }
+
+    val getFavoriteUsersUseCase by lazy {
+        GetFavoriteVisitorsUseCase()
+    }
+
+    val getLatestMonthDateUseCase by lazy {
+        GetLatestMonthDateUseCase()
+    }
+    val getFavoriteVisitorsUseCase by lazy {
+        GetFavoriteVisitorsUseCase()
+    }
+
+    val getUniqueViewsCountUseCase by lazy {
+        GetUniqueViewsCountUseCase()
+    }
+
+    val getWeekFromDateUseCase by lazy {
+        GetPreviousSevenDaysUseCase()
+    }
+
+    val getPreviousSevenWeeksUseCase by lazy {
+        GetPreviousSevenWeeksUseCase()
+    }
+
+    val getPreviousSevenMonthsUseCase by lazy {
+        GetPreviousSevenMonthsUseCase()
+    }
+
+    val getPreviousSevenDaysUseCase by lazy{
+        GetPreviousSevenDaysUseCase()
+    }
+
+    val getPreviousThirtyDaysUseCase by lazy {
+        GetPreviousThirtyDaysUseCase()
+    }
+
+    val genderAgePeriodInteractor by lazy {
+        GenderAgePeriodFilterInteractorImpl(
+            getLatestMonthDateUseCase = getLatestMonthDateUseCase,
+            getPreviousSevenDaysUseCase = getPreviousSevenDaysUseCase,
+            getPreviousThirtyDaysUseCase = getPreviousThirtyDaysUseCase
+        )
+    }
+
+    val visitorsPeriodFilterInteractor by lazy {
+        VisitorsPeriodFilterInteractorImpl(
+            getUniqueViewsCountUseCase = getUniqueViewsCountUseCase,
+            getWeekFromDateUseCase = getWeekFromDateUseCase,
+            getLatestMonthDateUseCase = getLatestMonthDateUseCase,
+            getLastSevenWeeksUseCase = getPreviousSevenWeeksUseCase,
+            getLastSevenMonthsUseCase = getPreviousSevenMonthsUseCase
+        )
+    }
+
 }

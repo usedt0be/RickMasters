@@ -213,7 +213,7 @@ fun VisitorsDiagram(
                                     path = lowerDash,
                                     color = lineColor,
                                     style = Stroke(
-                                        width = 1.dp.toPx(),
+                                        width = 0.5.dp.toPx(),
                                         pathEffect = dashEffect,
                                         cap = StrokeCap.Round
                                     )

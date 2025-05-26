@@ -1,15 +1,11 @@
 package com.example.rickmasters.presentation.screens.statistics.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,7 +21,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import com.example.rickmasters.R
 import com.example.rickmasters.domain.models.CounterObservableValue
 import com.example.rickmasters.domain.models.TrendDirection
@@ -38,12 +33,14 @@ fun UsersActivityDifferenceCounter(
     counterObservableValue: CounterObservableValue,
     visitorsDifference: Int,
     modifier: Modifier = Modifier,
-    shape: Shape = RectangleShape
+    shape: Shape = RectangleShape,
+    color: Color = Color.Transparent
 ) {
     Surface(
         modifier = modifier.fillMaxWidth()
             .heightIn(min = 96.dp),
         shape = shape,
+        color = color
     ) {
         Row(
             modifier = Modifier,
