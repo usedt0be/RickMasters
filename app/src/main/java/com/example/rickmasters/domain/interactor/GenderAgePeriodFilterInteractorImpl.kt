@@ -1,19 +1,15 @@
 package com.example.rickmasters.domain.interactor
 
-import android.util.Log
 import com.example.rickmasters.domain.models.Statistic
 import com.example.rickmasters.domain.models.User
 import com.example.rickmasters.domain.parseTimestampToDate
 import com.example.rickmasters.domain.usecase.GetLatestMonthDateUseCase
-import com.example.rickmasters.domain.usecase.GetPreviousSevenDaysUseCase
-import com.example.rickmasters.domain.usecase.GetPreviousThirtyDaysUseCase
+import com.example.rickmasters.domain.usecase.GetPreviousDaysUseCase
 import com.example.rickmasters.presentation.screens.statistics.entity.GenderAgeDiagramPeriod
-import kotlin.collections.filter
 
 class GenderAgePeriodFilterInteractorImpl(
     private val getLatestMonthDateUseCase: GetLatestMonthDateUseCase,
-    private val getPreviousSevenDaysUseCase: GetPreviousSevenDaysUseCase,
-    private val getPreviousThirtyDaysUseCase: GetPreviousThirtyDaysUseCase,
+    private val getPreviousDaysUseCase: GetPreviousDaysUseCase,
 ): GenderAgePeriodFilterInteractor {
 
     override fun filterGenderAge(
@@ -70,7 +66,11 @@ class GenderAgePeriodFilterInteractorImpl(
                 month * 100 + day
             }) ?: return emptyList()
 
-        val lastMonthDates = getPreviousThirtyDaysUseCase.invoke(globalMaxDate).toSet()
+        val lastMonthDates = getPreviousDaysUseCase.invoke(
+            startDate = globalMaxDate,
+            days = 30,
+            period = GetPreviousDaysUseCase.Period.DAYS
+        )
 
         return usersMap.filter { (_, dates) ->
             val maxDate = getLatestMonthDateUseCase.invoke(dates) ?: return@filter false
@@ -89,7 +89,10 @@ class GenderAgePeriodFilterInteractorImpl(
                 month * 100 + day
             }) ?: return emptyList()
 
-        val lastWeekDates = getPreviousSevenDaysUseCase.invoke(globalMaxDate).toSet()
+        val lastWeekDates = getPreviousDaysUseCase.invoke(
+            globalMaxDate,
+            GetPreviousDaysUseCase.Period.WEEKS
+        ).toSet()
 
         return usersMap.filter { (_, dates) ->
             val maxDate = getLatestMonthDateUseCase.invoke(dates) ?: return@filter false

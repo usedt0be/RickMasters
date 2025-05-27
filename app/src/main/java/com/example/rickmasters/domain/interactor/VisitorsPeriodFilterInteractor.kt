@@ -10,4 +10,5 @@ interface VisitorsPeriodFilterInteractor {
 
 
     fun filterVisitorsByMonths(statistics: List<Statistic>): Map<String, Int>?
+
 }

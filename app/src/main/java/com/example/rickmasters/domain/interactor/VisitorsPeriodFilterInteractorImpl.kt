@@ -2,9 +2,7 @@ package com.example.rickmasters.domain.interactor
 
 import com.example.rickmasters.domain.models.Statistic
 import com.example.rickmasters.domain.usecase.GetLatestMonthDateUseCase
-import com.example.rickmasters.domain.usecase.GetPreviousSevenDaysUseCase
-import com.example.rickmasters.domain.usecase.GetPreviousSevenMonthsUseCase
-import com.example.rickmasters.domain.usecase.GetPreviousSevenWeeksUseCase
+import com.example.rickmasters.domain.usecase.GetPreviousDaysUseCase
 import com.example.rickmasters.domain.usecase.GetUniqueViewsCountUseCase
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -12,16 +10,14 @@ import java.util.Locale
 
 class VisitorsPeriodFilterInteractorImpl(
     private val getUniqueViewsCountUseCase: GetUniqueViewsCountUseCase,
-    private val getWeekFromDateUseCase: GetPreviousSevenDaysUseCase,
+    private val getPreviousDaysUseCase: GetPreviousDaysUseCase,
     private val getLatestMonthDateUseCase: GetLatestMonthDateUseCase,
-    private val getLastSevenWeeksUseCase: GetPreviousSevenWeeksUseCase,
-    private val getLastSevenMonthsUseCase: GetPreviousSevenMonthsUseCase
 ): VisitorsPeriodFilterInteractor {
     override fun filterVisitorsByDays(statistics: List<Statistic>): Map<String, Int>? {
         val uniqueViews = getUniqueViewsCountUseCase.invoke(statistics)
         val dailyVisitors =
             getLatestMonthDateUseCase.invoke(uniqueViews.keys.toList())?.let { date ->
-                getWeekFromDateUseCase.invoke(startDate = date).associateWith { date ->
+                getPreviousDaysUseCase.invoke(startDate = date, period = GetPreviousDaysUseCase.Period.DAYS).associateWith { date ->
                     uniqueViews[date] ?: 0
                 }
             }
@@ -35,8 +31,8 @@ class VisitorsPeriodFilterInteractorImpl(
         return getLatestMonthDateUseCase
             .invoke(uniqueViews.keys.toList())
             ?.let { latestDate ->
-                getLastSevenWeeksUseCase
-                    .invoke(latestDate)
+                getPreviousDaysUseCase
+                    .invoke(startDate = latestDate, period = GetPreviousDaysUseCase.Period.WEEKS)
                     .associateWith { weekStartStr ->
                         val start = formatter.parse(weekStartStr) ?: return@associateWith 0
                         val end = Calendar.getInstance().apply {
@@ -64,8 +60,7 @@ class VisitorsPeriodFilterInteractorImpl(
         return getLatestMonthDateUseCase
             .invoke(uniqueViews.keys.toList())
             ?.let { latestDate ->
-                getLastSevenMonthsUseCase
-                    .invoke(latestDate)
+                getPreviousDaysUseCase.invoke(startDate = latestDate, period = GetPreviousDaysUseCase.Period.MONTHS)
                     .associateWith { monthStartStr ->
                         val start = formatter.parse(monthStartStr) ?: return@associateWith 0
                         val calendar = Calendar.getInstance().apply {
@@ -85,4 +80,6 @@ class VisitorsPeriodFilterInteractorImpl(
                     }
             }
     }
+
+
 }
