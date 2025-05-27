@@ -1,6 +1,6 @@
 # RickMasters
 
-Stack: Kotlin, Jetpack Compose, Ktor, Coroutines Flow
+Stack: Kotlin, Jetpack Compose, Ktor, Coroutines, Flow
 
 Screenshots
 ---
