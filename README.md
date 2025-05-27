@@ -4,6 +4,8 @@ Stack: Kotlin, Jetpack Compose, Ktor, Coroutines Flow
 
 ##Screenshots
 ---
-![First screenshot](screenshots/Screenshot_first.png)
-![First screenshot](screenshots/Screenshot_second.png)
-![First screenshot](screenshots/Screenshot_third.png)
+![First screenshot](screenshots/screenshot_visitors_stats.png)
+![First screenshot](screenshots/screenshot_gender_age_stats_today.png)
+![First screenshot](screenshots/screenshot_gender_age_stats_monthly.png)
+
+
